@@ -1,16 +1,18 @@
-package grgroup
+package grgroup_test
 
 import (
 	"errors"
 	"fmt"
+	"github.com/jiz12/grgroup"
 	"testing"
 	"time"
 )
 
-func TestGrGroup(t *testing.T) {
+func BenchmarkGrGroup(b *testing.B) {
+
 	ch := make(chan string, 10)
 	res := make([]string, 0)
-	g, err := NewGrGroup(10)
+	g, err := grgroup.NewGrGroup(10)
 	if err != nil {
 		panic(err)
 	}
@@ -34,7 +36,7 @@ func TestGrGroup(t *testing.T) {
 	err = g.Wait()
 	close(ch)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	fmt.Println(res)
 }
