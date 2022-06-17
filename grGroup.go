@@ -12,8 +12,6 @@ const (
 	exceedMaxGrNumError string = "maxGrNum must be greater than 0"
 )
 
-type poolFunc func() error
-
 type grGroup struct {
 	mu       sync.Mutex
 	wg       sync.WaitGroup
@@ -45,7 +43,7 @@ func (g *grGroup) Go(fn func() error) {
 	}
 	g.wg.Add(1)
 	g.limit <- struct{}{}
-	go func(fn poolFunc) {
+	go func(fn func() error) {
 		defer func() {
 			<-g.limit
 			g.wg.Done()
